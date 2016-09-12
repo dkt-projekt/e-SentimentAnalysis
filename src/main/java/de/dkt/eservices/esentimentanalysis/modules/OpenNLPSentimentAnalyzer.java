@@ -7,6 +7,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Date;
+
+import org.hibernate.boot.registry.selector.spi.StrategySelectionException;
 
 import de.dkt.common.filemanagement.FileFactory;
 import opennlp.tools.doccat.DoccatModel;
@@ -68,7 +75,7 @@ public class OpenNLPSentimentAnalyzer {
 			String category = myCategorizer.getBestCategory(outcomes);
 
 			if (category.equalsIgnoreCase("1")) { // TODO: experiment with more fine-grained classes and then modify this here accordingly
-				returnValue = "POSTIVE";
+				returnValue = "POSITIVE";
 			} else {
 				returnValue = "NEGATIVE";
 			}
@@ -81,6 +88,12 @@ public class OpenNLPSentimentAnalyzer {
 		return returnValue;
 		
 	}
+	static String readFile(String path, Charset encoding) 
+			  throws IOException 
+			{
+			  byte[] encoded = Files.readAllBytes(Paths.get(path));
+			  return new String(encoded, encoding);
+			}
 	
 	public static void main(String[] args){
 		
@@ -103,8 +116,34 @@ public class OpenNLPSentimentAnalyzer {
 		//String result = trainModel("C:\\Users\\pebo01\\Desktop\\dummyData.txt", "dummyModel");
 		//System.out.println(result);
 		
-		System.out.println(classifyText("So happy to be home", "dummyModel"));
-		System.out.println(classifyText("The painting is ugly, will return it tomorrow...", "dummyModel"));
+		//System.out.println(classifyText("So happy to be home", "dummyModel"));
+		//System.out.println(classifyText("The painting is ugly, will return it tomorrow...", "dummyModel"));
+		
+		//String result = trainModel("C:\\Users\\pebo01\\Desktop\\data\\sentimentData\\michiganMovieReviews\\michiganReviewsTrainData.txt", "michiganReviewsModel");
+		Date d1 = new Date();
+		try {
+			String fileContent = readFile("C:\\Users\\pebo01\\Desktop\\data\\sentimentData\\michiganMovieReviews\\michiganReviewsTestData.txt", StandardCharsets.UTF_8);
+			String[] lines = fileContent.split("\\n");
+			for (String l : lines){
+				String v = null;
+				String polarity = classifyText(l, "michiganReviewsModel");
+				
+				if (polarity.equals("POSITIVE")){
+					v = "1";
+				}
+				else if (polarity.equals("NEGATIVE")){
+					v = "0";
+				}
+				System.out.println(v + "\t" + l);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Date d2 = new Date();
+		System.out.println("Start time:" + d1);
+		System.out.println("End time:" + d2);
 		
 	}
 	
