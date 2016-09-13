@@ -7,15 +7,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Date;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.ResourceFactory;
 
 import de.dkt.common.niftools.DKTNIF;
 import de.dkt.common.niftools.NIFReader;
@@ -24,7 +22,6 @@ import de.dkt.eservices.esentimentanalysis.dfki.linguistic.SpanText;
 import de.dkt.eservices.esentimentanalysis.dfki.sentimentassigner.FrequencySentimentAssigner;
 import de.dkt.eservices.esentimentanalysis.dfki.sentimentassigner.ISentimentAssigner;
 import de.dkt.eservices.esentimentanalysis.dfki.sentimentassigner.SentimentAssigner;
-import de.dkt.eservices.esentimentanalysis.dfki.values.SentimentValue;
 import eu.freme.common.conversion.rdf.JenaRDFConversionService;
 import eu.freme.common.conversion.rdf.RDFConstants;
 import eu.freme.common.conversion.rdf.RDFConstants.RDFSerialization;
@@ -44,14 +41,14 @@ public class SentimentAnalyzer {
 
 
 	public SentimentAnalyzer() {
-		initializeAssigner(sentimentAnalysisType);
 	}
 
 	public SentimentAnalyzer(String sentimentAnalysisType) {
-		initializeAssigner(sentimentAnalysisType);
+		this.sentimentAnalysisType=sentimentAnalysisType;
 	}
 	
-	public void initializeAssigner(String sentimentAnalysisType){
+	@PostConstruct
+	public void initializeAssigner(){
 		System.out.println(sentimentAnalysisType);
 		if(sentimentAnalysisType.equalsIgnoreCase("baseline-dictionary")){
 			sentimentAssigner = new SentimentAssigner();
@@ -149,7 +146,7 @@ public class SentimentAnalyzer {
 //		String inputFile = "";
 //		String inputText = FileReadUtilities.readFile2String(inputFile);
 		SentimentAnalyzer sa = new SentimentAnalyzer("frequency-dictionary");
-		String inputText = "fun fun. fuck fuck fuck";
+		String inputText = "fun fun fuck fuck fuck";
 //		String inputText = "1297685	24-03-2015	Debt collection	Cont'd attempts collect debt not owed	Debt is not mine	\"I find this medical debt reported on my credit report  but I do not remember ever owing a bill with a remaining balance of {$7.00}. It looks like the company dated the opening of this debt XX/XX/2010. I looked for the collection company on line  but it is as though it does n't exist. It appears to have impact on my credit score. I am willing to pay it if I could get an itemized bill showing the date of the procedure and when and what my medical insurance company reports about it. Also  if the company no longer exist  IT WILL NEED TO BE REMOVE FROM MY CREDIT REPORT. My complaint is that this company has not sent me a bill showing the details of my so called debt  but has reported to the credit bureau that I owe this debt. This is harming my credit score and it is not making it 's contact information available to me. How am I to clear up my credit report if this company does n't exist  but they have reported that I owe a debt that I have no explanation for? _\" Company chooses not to provide a public response \"Healthcare Collections-I";
 		double sv1 = sa.analyzeSentiment(inputText, RDFSerialization.PLAINTEXT);
 		System.out.println("SENTIMENTVALUE1: "+sv1);
@@ -194,3 +191,4 @@ public class SentimentAnalyzer {
 	}
 
 }
+

@@ -47,12 +47,14 @@ public class FrequencySentimentAssigner implements ISentimentAssigner{
 			double d = computeSentimentOfWord(w.getText());
 			w.setSentimentValue(d);
 			return w;
+			//System.out.println("HERE 1");
 		}
 		else if(lu instanceof SpanWord ){
 			SpanWord w = (SpanWord)lu;
 			double d = computeSentimentOfWord(w.getText());
 			w.setSentimentValue(d);
 			return w;
+			//System.out.println("HERE 1");
 		}
 		else{
 			SpanText t = (SpanText) lu;
