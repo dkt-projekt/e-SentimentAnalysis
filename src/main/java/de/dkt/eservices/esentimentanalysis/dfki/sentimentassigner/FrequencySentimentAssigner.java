@@ -46,18 +46,22 @@ public class FrequencySentimentAssigner implements ISentimentAssigner{
 			Word w = (Word)lu;
 			double d = computeSentimentOfWord(w.getText());
 			w.setSentimentValue(d);
+//			System.out.println("word: ");
+//			w.indentedPrintToScreen(" ");
 			return w;
-			//System.out.println("HERE 1");
 		}
 		else if(lu instanceof SpanWord ){
 			SpanWord w = (SpanWord)lu;
 			double d = computeSentimentOfWord(w.getText());
 			w.setSentimentValue(d);
+//			System.out.println("SpanWord: ");
+//			w.indentedPrintToScreen(" ");
 			return w;
-			//System.out.println("HERE 1");
 		}
 		else{
 			SpanText t = (SpanText) lu;
+//			System.out.println("in computeSentiment, SpanText t: "); 
+//			t.indentedPrintToScreen(" ");
 			List<LinguisticUnit> list = t.getChilds();
 			List<Double> values = new LinkedList<Double>();
 			for (LinguisticUnit lUnit : list) {
@@ -87,11 +91,17 @@ public class FrequencySentimentAssigner implements ISentimentAssigner{
 	
 	public double computeSentimentValueOfText (List<LinguisticUnit> units, List<Double> semUnits){
 		double d = 0;
-		int countUnits = 0;
+		int countUnits = 0;	
+/*		System.out.println("In computeSentimentValueOfText, units: ");
+		for (LinguisticUnit u : units){
+		
+			u.indentedPrintToScreen(" ");
+		}*/
 		for (double ad: semUnits) {
+			if(ad < 0 || ad > 0){
 			countUnits++;
 			d += ad;
-			System.out.println("First loop. countUnits: "+countUnits+" d: "+d);
+			System.out.println("First loop. countUnits: "+countUnits+" d: "+d);}
 		}
 		if(countUnits==0){
 			System.out.println("count=0: "+d);
@@ -101,13 +111,15 @@ public class FrequencySentimentAssigner implements ISentimentAssigner{
 			System.out.println("count!=0: "+(d/countUnits));
 			return (d/countUnits);
 		}
-		 /*double d = 0;
+		/* double d = 0;
 		int i = 0;
 		for (double ad: semUnits) {
 			d += ad;
+			System.out.println("d: "+d);
 			i++;
+			System.out.println("i: "+i);
 		}
-		return d/i;*/
+		return d/i; */
 	}
 		
 	public double computeSentimentOfText (List<LinguisticUnit> units, List<SentimentValue> semUnits){
