@@ -15,7 +15,7 @@ import de.dkt.eservices.esentimentanalysis.dfki.linguistic.SpanWord;
 import de.dkt.eservices.esentimentanalysis.dfki.linguistic.Word;
 import de.dkt.eservices.esentimentanalysis.dfki.values.SentimentValue;
 
-public class FrequencySentimentAssigner {
+public class FrequencySentimentAssigner implements ISentimentAssigner{
 
 	static Logger logger = Logger.getLogger(FrequencySentimentAssigner.class);
 
@@ -41,25 +41,31 @@ public class FrequencySentimentAssigner {
 		}
 	}
 	
-	public double computeSentiment (LinguisticUnit lu){
+	public LinguisticUnit computeSentiment (LinguisticUnit lu){
 		if(lu instanceof Word ){
 			Word w = (Word)lu;
-			return computeSentimentOfWord(w.getText());
+			double d = computeSentimentOfWord(w.getText());
+			w.setSentimentValue(d);
+			return w;
 		}
 		else if(lu instanceof SpanWord ){
 			SpanWord w = (SpanWord)lu;
-			return computeSentimentOfWord(w.getText());
+			double d = computeSentimentOfWord(w.getText());
+			w.setSentimentValue(d);
+			return w;
 		}
 		else{
 			SpanText t = (SpanText) lu;
 			List<LinguisticUnit> list = t.getChilds();
 			List<Double> values = new LinkedList<Double>();
 			for (LinguisticUnit lUnit : list) {
-				double d= computeSentiment(lUnit);
-				values.add( d );
+				LinguisticUnit aux = computeSentiment(lUnit);
+				values.add( aux.getSentimentValue() );
 			}
 //			return computeSentimentOfText(list,values);
-			return computeSentimentValueOfText(list,values);
+			double d = computeSentimentValueOfText(list,values);
+			t.setSentimentValue(d);
+			return t;
 		}
 	}
 
@@ -79,13 +85,20 @@ public class FrequencySentimentAssigner {
 	
 	public double computeSentimentValueOfText (List<LinguisticUnit> units, List<Double> semUnits){
 		double d = 0;
+		int countUnits = 0;
 		for (double ad: semUnits) {
+			countUnits++;
 			d += ad;
 		}
-		return d;
+		if(countUnits==0){
+			System.out.println("count=0: "+d);
+			return d;
+		}
+		else{
+			System.out.println("count!=0: "+(d/countUnits));
+			return (d/countUnits);
+		}
 	}
-
-		
 		
 	public double computeSentimentOfText (List<LinguisticUnit> units, List<SentimentValue> semUnits){
 
@@ -102,42 +115,22 @@ public class FrequencySentimentAssigner {
 		 */
 		
 		//Simpliest approach: add values and see polarity
+		
+		int countUnits = 0;
+		
 		double d = 0;
 		for (SentimentValue sv : semUnits) {
+			countUnits++;
 			d += sv.numericValue();
-//			if(sv.equals(SentimentValue.NONE)){
-//			}
-//			else if(sv.equals(SentimentValue.VERYNEGATIV)){
-//				d += -2;
-//			}
-//			else if(sv.equals(SentimentValue.NEGATIV)){
-//				d += -1;
-//			}
-//			else if(sv.equals(SentimentValue.NEUTRUM)){
-//			}
-//			else if(sv.equals(SentimentValue.POSITIVE)){
-//				d += 1;
-//			}
-//			else if(sv.equals(SentimentValue.VERYPOSITIVE)){
-//				d += 2;
-//			}
 		}
-		return d;
-//		if(d<=-2){
-//			return SentimentValue.VERYNEGATIV;
-//		}
-//		else if(d<0){
-//			return SentimentValue.NEGATIV;
-//		}
-//		else if(d==0){
-//			return SentimentValue.NEUTRUM;
-//		}
-//		else if(d<2){
-//			return SentimentValue.POSITIVE;
-//		}
-//		else{
-//			return SentimentValue.VERYPOSITIVE;
-//		}
+		if(countUnits==0){
+			System.out.println("count=0: "+d);
+			return d;
+		}
+		else{
+			System.out.println("count!=0: "+(d/countUnits));
+			return (d/countUnits);
+		}
 	}
 
 	

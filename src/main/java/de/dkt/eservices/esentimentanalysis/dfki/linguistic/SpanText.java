@@ -7,6 +7,8 @@ public class SpanText implements LinguisticUnit {
 	protected List<LinguisticUnit> childs;
 	protected int startSpan;
 	protected int endSpan;
+	
+	protected double sentimentValue;
 
 	public SpanText() {
 	}
@@ -65,6 +67,14 @@ public class SpanText implements LinguisticUnit {
 
 	public void setEndSpan(int endSpan) {
 		this.endSpan = endSpan;
+	}
+
+	public double getSentimentValue() {
+		return sentimentValue;
+	}
+
+	public void setSentimentValue(double sentimentValue) {
+		this.sentimentValue = sentimentValue;
 	}
 	
 	

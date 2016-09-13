@@ -15,7 +15,7 @@ import de.dkt.eservices.esentimentanalysis.dfki.linguistic.SpanWord;
 import de.dkt.eservices.esentimentanalysis.dfki.linguistic.Word;
 import de.dkt.eservices.esentimentanalysis.dfki.values.SentimentValue;
 
-public class SentimentAssigner {
+public class SentimentAssigner implements ISentimentAssigner{
 
 	static Logger logger = Logger.getLogger(SentimentAssigner.class);
 
@@ -41,25 +41,31 @@ public class SentimentAssigner {
 		}
 	}
 	
-	public double computeSentiment (LinguisticUnit lu){
+	public LinguisticUnit computeSentiment (LinguisticUnit lu){
 		if(lu instanceof Word ){
 			Word w = (Word)lu;
-			return computeSentimentOfWord(w.getText());
+			double d = computeSentimentOfWord(w.getText());
+			w.setSentimentValue(d);
+			return w;
 		}
 		else if(lu instanceof SpanWord ){
 			SpanWord w = (SpanWord)lu;
-			return computeSentimentOfWord(w.getText());
+			double d = computeSentimentOfWord(w.getText());
+			w.setSentimentValue(d);
+			return w;
 		}
 		else{
 			SpanText t = (SpanText) lu;
 			List<LinguisticUnit> list = t.getChilds();
 			List<Double> values = new LinkedList<Double>();
 			for (LinguisticUnit lUnit : list) {
-				double d= computeSentiment(lUnit);
-				values.add( d );
+				LinguisticUnit aux = computeSentiment(lUnit);
+				values.add( aux.getSentimentValue() );
 			}
 //			return computeSentimentOfText(list,values);
-			return computeSentimentValueOfText(list,values);
+			double d = computeSentimentValueOfText(list,values);
+			t.setSentimentValue(d);
+			return t;
 		}
 	}
 
@@ -82,6 +88,8 @@ public class SentimentAssigner {
 		for (double ad: semUnits) {
 			d += ad;
 		}
+		System.out.println("outgoing2");
+
 		return d;
 	}
 
@@ -104,22 +112,23 @@ public class SentimentAssigner {
 		//Simpliest approach: add values and see polarity
 		double d = 0;
 		for (SentimentValue sv : semUnits) {
-			if(sv.equals(SentimentValue.NONE)){
-			}
-			else if(sv.equals(SentimentValue.VERYNEGATIV)){
-				d += -2;
-			}
-			else if(sv.equals(SentimentValue.NEGATIV)){
-				d += -1;
-			}
-			else if(sv.equals(SentimentValue.NEUTRUM)){
-			}
-			else if(sv.equals(SentimentValue.POSITIVE)){
-				d += 1;
-			}
-			else if(sv.equals(SentimentValue.VERYPOSITIVE)){
-				d += 2;
-			}
+			d += sv.numericValue();
+//			if(sv.equals(SentimentValue.NONE)){
+//			}
+//			else if(sv.equals(SentimentValue.VERYNEGATIV)){
+//				d += -2;
+//			}
+//			else if(sv.equals(SentimentValue.NEGATIV)){
+//				d += -1;
+//			}
+//			else if(sv.equals(SentimentValue.NEUTRUM)){
+//			}
+//			else if(sv.equals(SentimentValue.POSITIVE)){
+//				d += 1;
+//			}
+//			else if(sv.equals(SentimentValue.VERYPOSITIVE)){
+//				d += 2;
+//			}
 		}
 		return d;
 //		if(d<=-2){

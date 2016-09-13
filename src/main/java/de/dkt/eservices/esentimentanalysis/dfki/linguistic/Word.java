@@ -3,6 +3,7 @@ package de.dkt.eservices.esentimentanalysis.dfki.linguistic;
 public class Word implements LinguisticUnit {
 
 	protected String text;
+	protected double sentimentValue;
 
 	
 	public Word(String text) {
@@ -20,5 +21,12 @@ public class Word implements LinguisticUnit {
 	
 	public void indentedPrintToScreen(String indent){
 		System.out.println(indent+text);
+	}
+	public double getSentimentValue() {
+		return sentimentValue;
+	}
+	
+	public void setSentimentValue(double sentimentValue) {
+		this.sentimentValue = sentimentValue;
 	}
 }

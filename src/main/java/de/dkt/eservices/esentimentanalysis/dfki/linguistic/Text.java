@@ -5,6 +5,7 @@ import java.util.List;
 public class Text implements LinguisticUnit {
 
 	protected List<LinguisticUnit> childs;
+	protected double sentimentValue;
 
 	public Text() {
 	}
@@ -37,5 +38,12 @@ public class Text implements LinguisticUnit {
 		Text t1 = new Text("There is something inside the text that can help me do my staff. This is simple, but difficult at the same time.\n I do not know what to do.\n Greetings");
 		t1.indentedPrintToScreen("\t");
 		
+	}
+	public double getSentimentValue() {
+		return sentimentValue;
+	}
+	
+	public void setSentimentValue(double sentimentValue) {
+		this.sentimentValue = sentimentValue;
 	}
 }

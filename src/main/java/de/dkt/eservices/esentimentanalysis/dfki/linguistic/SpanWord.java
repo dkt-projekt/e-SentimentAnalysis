@@ -6,6 +6,8 @@ public class SpanWord implements LinguisticUnit {
 	protected int startSpan;
 	protected int endSpan;
 	
+	protected double sentimentValue;
+
 	public SpanWord(String text) {
 		super();
 		this.text = text;
@@ -45,5 +47,12 @@ public class SpanWord implements LinguisticUnit {
 
 	public void setEndSpan(int endSpan) {
 		this.endSpan = endSpan;
+	}
+	public double getSentimentValue() {
+		return sentimentValue;
+	}
+	
+	public void setSentimentValue(double sentimentValue) {
+		this.sentimentValue = sentimentValue;
 	}
 }
