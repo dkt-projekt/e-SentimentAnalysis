@@ -29,7 +29,7 @@ public enum SentimentValue {
     	else if(s.equalsIgnoreCase("bad") || s.equalsIgnoreCase("negative") || s.equalsIgnoreCase("b") || s.equalsIgnoreCase("-1")){
     		return SentimentValue.NEGATIV;
     	}
-    	else if(s.equalsIgnoreCase("neutrum") || s.equalsIgnoreCase("n") || s.equalsIgnoreCase("0")){
+    	else if(s.equalsIgnoreCase("neutrum") || s.equalsIgnoreCase("neutral") ||s.equalsIgnoreCase("n") || s.equalsIgnoreCase("0")){
     		return SentimentValue.NEUTRUM;
     	}
     	else if(s.equalsIgnoreCase("good") || s.equalsIgnoreCase("positive") || s.equalsIgnoreCase("g") || s.equalsIgnoreCase("1")){

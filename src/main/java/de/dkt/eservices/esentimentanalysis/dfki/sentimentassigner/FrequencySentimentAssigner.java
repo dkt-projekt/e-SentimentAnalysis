@@ -20,7 +20,7 @@ public class FrequencySentimentAssigner implements ISentimentAssigner{
 	static Logger logger = Logger.getLogger(FrequencySentimentAssigner.class);
 
 	private static Map<String, SentimentValue> values;
-	private static String sentimentValuesDictionary = "sentimentDictionaries/sentimentvalues-en.txt";
+	private static String sentimentValuesDictionary = "sentimentDictionaries/sentimentvalues-en2.txt";
 	
 	public boolean loadValues(){
 		try{
