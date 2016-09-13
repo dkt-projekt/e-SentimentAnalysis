@@ -92,7 +92,7 @@ public class SentimentAnalyzer {
         	
 //        	text.indentedPrintToScreen(" ");
         	
-			double d = sentimentAssigner.computeSentiment(text);
+			double d = sentimentAssigner.computeSentiment(text).getSentimentValue();
 	        return d;
 		}
 		catch(Exception e){
