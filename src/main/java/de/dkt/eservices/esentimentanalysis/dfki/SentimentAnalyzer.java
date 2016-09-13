@@ -7,15 +7,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Date;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.ResourceFactory;
 
 import de.dkt.common.niftools.DKTNIF;
 import de.dkt.common.niftools.NIFReader;
@@ -24,7 +22,6 @@ import de.dkt.eservices.esentimentanalysis.dfki.linguistic.SpanText;
 import de.dkt.eservices.esentimentanalysis.dfki.sentimentassigner.FrequencySentimentAssigner;
 import de.dkt.eservices.esentimentanalysis.dfki.sentimentassigner.ISentimentAssigner;
 import de.dkt.eservices.esentimentanalysis.dfki.sentimentassigner.SentimentAssigner;
-import de.dkt.eservices.esentimentanalysis.dfki.values.SentimentValue;
 import eu.freme.common.conversion.rdf.JenaRDFConversionService;
 import eu.freme.common.conversion.rdf.RDFConstants;
 import eu.freme.common.conversion.rdf.RDFConstants.RDFSerialization;
@@ -44,14 +41,14 @@ public class SentimentAnalyzer {
 
 
 	public SentimentAnalyzer() {
-		initializeAssigner(sentimentAnalysisType);
 	}
 
 	public SentimentAnalyzer(String sentimentAnalysisType) {
-		initializeAssigner(sentimentAnalysisType);
+		this.sentimentAnalysisType=sentimentAnalysisType;
 	}
 	
-	public void initializeAssigner(String sentimentAnalysisType){
+	@PostConstruct
+	public void initializeAssigner(){
 		System.out.println(sentimentAnalysisType);
 		if(sentimentAnalysisType.equalsIgnoreCase("baseline-dictionary")){
 			sentimentAssigner = new SentimentAssigner();

@@ -89,6 +89,7 @@ public class FrequencySentimentAssigner implements ISentimentAssigner{
 		for (double ad: semUnits) {
 			countUnits++;
 			d += ad;
+			System.out.println("First loop. countUnits: "+countUnits+" d: "+d);
 		}
 		if(countUnits==0){
 			System.out.println("count=0: "+d);
@@ -98,6 +99,13 @@ public class FrequencySentimentAssigner implements ISentimentAssigner{
 			System.out.println("count!=0: "+(d/countUnits));
 			return (d/countUnits);
 		}
+		 /*double d = 0;
+		int i = 0;
+		for (double ad: semUnits) {
+			d += ad;
+			i++;
+		}
+		return d/i;*/
 	}
 		
 	public double computeSentimentOfText (List<LinguisticUnit> units, List<SentimentValue> semUnits){
