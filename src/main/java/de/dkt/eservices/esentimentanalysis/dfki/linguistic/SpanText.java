@@ -24,7 +24,7 @@ public class SpanText implements LinguisticUnit {
 //	}
 	
 	public SpanText(String s, int offset) {
-		childs = TextSplitter.splitSentences(s.replaceAll("[\\.,]", ""),offset);
+		childs = TextSplitter.splitSentences(s,offset);
 		startSpan = offset;
 		endSpan = offset + s.length();
 	}	
