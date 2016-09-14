@@ -111,7 +111,7 @@ public class PoSSentimentAssigner implements ISentimentAssigner{
 			//then add the two values. 
 			
 			HashMap<String, List<IndexedWord>>  sMap = SentimentScoper.getScopeForSentiment(lu.getString(), sw);
-			System.out.println(sMap);
+//			System.out.println(sMap);
 			List<String> negatedWords = new LinkedList<>();
 			for (String key : sMap.keySet()) {
 			    if(key.contains("negated_")){
