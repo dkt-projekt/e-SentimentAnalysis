@@ -85,22 +85,21 @@ public class PoSSentimentAssigner implements ISentimentAssigner{
 			List<Double> values = new LinkedList<Double>();
 		
 			List<LinguisticUnit> newlist = new LinkedList<LinguisticUnit>();
+			List<String> sw = new LinkedList<>();
 			for (LinguisticUnit lUnit : list) {
 				LinguisticUnit unitAux = computeSentiment(lUnit);
 				newlist.add(unitAux);
-				values.add( unitAux.getSentimentValue() );
+				if(unitAux.getSentimentValue()>0|unitAux.getSentimentValue()<0){
+					values.add( unitAux.getSentimentValue() );
+					sw.add(lUnit.getString());
+					System.out.println("added to sw: "+lUnit.getString());
+					}
 			}
-			System.out.println("LinuguisticUnit lu");
-			lu.indentedPrintToScreen(" ");
-			System.out.println("tokenized sentence called list:");
-			for(LinguisticUnit lUnit : list){
-				System.out.println(lUnit.getString());
+			double value =0;
+			for (double v : values){
+				value += v;
 			}
-			List<String> sw = new LinkedList<>();
-			for(LinguisticUnit lUnit : list){
-				sw.add(lUnit.getString());
-				System.out.println("adding to map called sw");
-			}
+			System.out.println("value is "+value);
 	
 			//list = word of sentence
 			//values = list of doubles that are sent.values for the words of the sentence
@@ -112,6 +111,27 @@ public class PoSSentimentAssigner implements ISentimentAssigner{
 			//add everything up
 			HashMap<String, List<IndexedWord>>  sMap = SentimentScoper.getScopeForSentiment(lu.getString(), sw);
 			System.out.println(sMap);
+			List<String> negatedWords = new LinkedList<>();
+			List<Double> negatedValues = new LinkedList<Double>();
+			for (String key : sMap.keySet()) {
+			    if(key.contains("negated_")){
+			    	key = key.replace("negated_", "");
+			    	key = key.replaceAll("\\|.*", "");
+			    	negatedWords.add(key);
+			    }
+			}
+			System.out.println(negatedWords);
+			double f =0;
+			for(String word : negatedWords){
+				Word wd = new Word(word);
+				LinguisticUnit foo = computeSentiment(wd);
+				f += foo.getSentimentValue()*(-2);				
+			}
+			System.out.println("f is "+f);
+			double total = value+f;
+			System.out.println("total is "+total);
+			//walk trough sMap and filter stings starting with "negated_". Substract the "negated_" and get the values, *(-1) before adding,
+			//then add the two values, bäm, done. 
 			
 			
 //			return computeSentimentOfText(list,values);
