@@ -3,11 +3,14 @@ package de.dkt.eservices.esentimentanalysis.dfki.linguistic;
 import java.util.LinkedList;
 import java.util.List;
 
+import de.dkt.eservices.eopennlp.modules.SentenceDetector;
+import de.dkt.eservices.eopennlp.modules.Tokenizer;
+
 public class TextSplitter {
 	
 	private static final String paragraphRegex = "\n";
-	private static final String sentenceRegex = "\\.";
-	private static final String wordRegex = " ";
+	//private static final String sentenceRegex = "\\.";
+	//private static final String wordRegex = " ";
 	
 	public static List<LinguisticUnit> splitText(String text, int initialOffset){
 		List<LinguisticUnit> list = new LinkedList<LinguisticUnit>();		
@@ -26,7 +29,10 @@ public class TextSplitter {
 	
 	public static List<LinguisticUnit> splitParagraphs(String text, int initialOffset){
 		List<LinguisticUnit> list = new LinkedList<LinguisticUnit>();
-		String sentences[] = text.split(sentenceRegex);		
+		String language = "en";
+		String modelName = language + "-sent.bin";
+		String sentences[] = SentenceDetector.detectSentences(text, modelName);
+		//String sentences[] = text.split(sentenceRegex);		
 		int offset=initialOffset;
 		for (String p : sentences) {
 			SpanText p1 = new SpanText();
@@ -40,7 +46,8 @@ public class TextSplitter {
 
 	public static List<LinguisticUnit> splitSentences(String text, int initialOffset){
 		List<LinguisticUnit> list = new LinkedList<LinguisticUnit>();
-		String words[] = text.split(wordRegex);		
+		String words[] = Tokenizer.simpleTokenizeInput(text);
+		//String words[] = text.split(wordRegex);		
 		int offset=initialOffset;
 		for (String p : words) {
 			list.add(new SpanWord(p,offset,offset+p.length()));

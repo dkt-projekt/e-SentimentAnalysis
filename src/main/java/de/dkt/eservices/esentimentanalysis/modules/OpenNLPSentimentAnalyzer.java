@@ -120,13 +120,15 @@ public class OpenNLPSentimentAnalyzer {
 		//System.out.println(classifyText("The painting is ugly, will return it tomorrow...", "dummyModel"));
 		
 		//String result = trainModel("C:\\Users\\pebo01\\Desktop\\data\\sentimentData\\michiganMovieReviews\\michiganReviewsTrainData.txt", "michiganReviewsModel");
+		//String result = trainModel("C:\\Users\\pebo01\\Desktop\\data\\sentimentData\\sanders-twitter-0.2\\stuffDownloadedFromGithub\\trainingData.txt", "twitterModel");
+		//System.exit(1);
 		Date d1 = new Date();
 		try {
-			String fileContent = readFile("C:\\Users\\pebo01\\Desktop\\data\\sentimentData\\michiganMovieReviews\\michiganReviewsTestData.txt", StandardCharsets.UTF_8);
+			String fileContent = readFile("C:\\Users\\pebo01\\Desktop\\data\\sentimentData\\sanders-twitter-0.2\\stuffDownloadedFromGithub\\testData.txt", StandardCharsets.UTF_8);
 			String[] lines = fileContent.split("\\n");
 			for (String l : lines){
 				String v = null;
-				String polarity = classifyText(l, "michiganReviewsModel");
+				String polarity = classifyText(l, "twitterModel");
 				
 				if (polarity.equals("POSITIVE")){
 					v = "1";
