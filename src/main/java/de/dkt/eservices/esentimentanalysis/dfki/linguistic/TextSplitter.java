@@ -5,12 +5,13 @@ import java.util.List;
 
 import de.dkt.eservices.eopennlp.modules.SentenceDetector;
 import de.dkt.eservices.eopennlp.modules.Tokenizer;
+import de.dkt.eservices.esentimentanalysis.dfki.SentimentAnalyzer;
 
 public class TextSplitter {
 	
 	private static final String paragraphRegex = "\n";
-	//private static final String sentenceRegex = "\\.";
-	//private static final String wordRegex = " ";
+	private static final String sentenceRegex = "\\.";
+	private static final String wordRegex = " ";
 	
 	public static List<LinguisticUnit> splitText(String text, int initialOffset){
 		List<LinguisticUnit> list = new LinkedList<LinguisticUnit>();		
@@ -29,8 +30,7 @@ public class TextSplitter {
 	
 	public static List<LinguisticUnit> splitParagraphs(String text, int initialOffset){
 		List<LinguisticUnit> list = new LinkedList<LinguisticUnit>();
-		String language = "en";
-		String modelName = language + "-sent.bin";
+		String modelName = SentimentAnalyzer.analysisLanguage + "-sent.bin";
 		String sentences[] = SentenceDetector.detectSentences(text, modelName);
 		//String sentences[] = text.split(sentenceRegex);		
 		int offset=initialOffset;

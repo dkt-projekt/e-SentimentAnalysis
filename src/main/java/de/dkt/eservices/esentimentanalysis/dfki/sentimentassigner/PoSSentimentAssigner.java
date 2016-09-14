@@ -110,7 +110,6 @@ public class PoSSentimentAssigner implements ISentimentAssigner{
 			//look if there is any negation for a word that is in the sentiment lexicon
 			//if yes, invert the value
 			//add everything up
-			
 			HashMap<String, List<IndexedWord>>  sMap = SentimentScoper.getScopeForSentiment(lu.getString(), sw);
 			System.out.println(sMap);
 			
