@@ -45,6 +45,7 @@ public class SentimentAnalyzer {
 
 	public SentimentAnalyzer(String sentimentAnalysisType) {
 		this.sentimentAnalysisType=sentimentAnalysisType;
+		initializeAssigner();
 	}
 	
 	@PostConstruct
@@ -88,7 +89,6 @@ public class SentimentAnalyzer {
         	SpanText text = new SpanText(textForProcessing);
         	
 //        	text.indentedPrintToScreen(" ");
-        	
 			double d = sentimentAssigner.computeSentiment(text).getSentimentValue();
 	        return d;
 		}
