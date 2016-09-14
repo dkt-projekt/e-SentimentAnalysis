@@ -92,14 +92,12 @@ public class PoSSentimentAssigner implements ISentimentAssigner{
 				if(unitAux.getSentimentValue()>0|unitAux.getSentimentValue()<0){
 					values.add( unitAux.getSentimentValue() );
 					sw.add(lUnit.getString());
-					System.out.println("added to sw: "+lUnit.getString());
 					}
 			}
 			double value =0;
 			for (double v : values){
 				value += v;
 			}
-			System.out.println("value is "+value);
 	
 			//list = word of sentence
 			//values = list of doubles that are sent.values for the words of the sentence
@@ -109,10 +107,12 @@ public class PoSSentimentAssigner implements ISentimentAssigner{
 			//look if there is any negation for a word that is in the sentiment lexicon
 			//if yes, invert the value
 			//add everything up
+			//walk trough sMap and filter stings starting with "negated_". Substract the "negated_" and get the values, *(-1) before adding,
+			//then add the two values. 
+			
 			HashMap<String, List<IndexedWord>>  sMap = SentimentScoper.getScopeForSentiment(lu.getString(), sw);
 			System.out.println(sMap);
 			List<String> negatedWords = new LinkedList<>();
-			List<Double> negatedValues = new LinkedList<Double>();
 			for (String key : sMap.keySet()) {
 			    if(key.contains("negated_")){
 			    	key = key.replace("negated_", "");
@@ -120,18 +120,15 @@ public class PoSSentimentAssigner implements ISentimentAssigner{
 			    	negatedWords.add(key);
 			    }
 			}
-			System.out.println(negatedWords);
 			double f =0;
 			for(String word : negatedWords){
 				Word wd = new Word(word);
 				LinguisticUnit foo = computeSentiment(wd);
 				f += foo.getSentimentValue()*(-2);				
 			}
-			System.out.println("f is "+f);
 			double total = value+f;
-			System.out.println("total is "+total);
-			//walk trough sMap and filter stings starting with "negated_". Substract the "negated_" and get the values, *(-1) before adding,
-			//then add the two values, bäm, done. 
+			t.setSentimentValue(total);
+			
 			
 			
 //			return computeSentimentOfText(list,values);
@@ -222,7 +219,6 @@ public class PoSSentimentAssigner implements ISentimentAssigner{
 		for (double ad: semUnits) {
 			d += ad;
 		}
-		System.out.println("outgoing2");
 
 		return d;
 	}
