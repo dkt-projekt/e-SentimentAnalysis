@@ -9,18 +9,20 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import de.dkt.common.filemanagement.FileFactory;
+import de.dkt.eservices.erattlesnakenlp.linguistic.SentimentScoper;
 import de.dkt.eservices.esentimentanalysis.dfki.linguistic.LinguisticUnit;
 import de.dkt.eservices.esentimentanalysis.dfki.linguistic.SpanText;
 import de.dkt.eservices.esentimentanalysis.dfki.linguistic.SpanWord;
 import de.dkt.eservices.esentimentanalysis.dfki.linguistic.Word;
 import de.dkt.eservices.esentimentanalysis.dfki.values.SentimentValue;
+import edu.stanford.nlp.ling.IndexedWord;
 
 public class PoSSentimentAssigner implements ISentimentAssigner{
 
 	static Logger logger = Logger.getLogger(PoSSentimentAssigner.class);
 
 	private static Map<String, SentimentValue> values;
-	private static String sentimentValuesDictionary = "sentimentDictionaries/sentimentvalues-en.txt";
+	private static String sentimentValuesDictionary = "sentimentDictionaries/sentimentvalues-en2.txt";
 
 	private static Map<String, Double> negationValues;
 	private static String negationValuesDictionary = "sentimentDictionaries/negationvalues-en.txt";
@@ -81,16 +83,41 @@ public class PoSSentimentAssigner implements ISentimentAssigner{
 			SpanText t = (SpanText) lu;
 			List<LinguisticUnit> list = t.getChilds();
 			List<Double> values = new LinkedList<Double>();
-			
+		
 			List<LinguisticUnit> newlist = new LinkedList<LinguisticUnit>();
 			for (LinguisticUnit lUnit : list) {
 				LinguisticUnit unitAux = computeSentiment(lUnit);
 				newlist.add(unitAux);
 				values.add( unitAux.getSentimentValue() );
 			}
+			System.out.println("LinuguisticUnit lu");
+			lu.indentedPrintToScreen(" ");
+			System.out.println("tokenized sentence called list:");
+			for(LinguisticUnit lUnit : list){
+				System.out.println(lUnit.getString());
+			}
+			List<String> sw = new LinkedList<>();
+			for(LinguisticUnit lUnit : list){
+				sw.add(lUnit.getString());
+				System.out.println("adding to map called sw");
+			}
+	
+			//list = word of sentence
+			//values = list of doubles that are sent.values for the words of the sentence
+			
+			//find which words of our sentiment lexicon are in the sentence
+			//put those word in the list the scoper is going to look for
+			//look if there is any negation for a word that is in the sentiment lexicon
+			//if yes, invert the value
+			//add everything up
+			
+			HashMap<String, List<IndexedWord>>  sMap = SentimentScoper.getScopeForSentiment(lu.getString(), sw);
+			System.out.println(sMap);
+			
+			
 //			return computeSentimentOfText(list,values);
 			
-			List<LinguisticUnit> negatedList = applyNegation(newlist);
+//			List<LinguisticUnit> negatedList = applyNegation(newlist);
 			
 			double d = computeSentimentValueOfText(list,values);
 			
@@ -100,7 +127,7 @@ public class PoSSentimentAssigner implements ISentimentAssigner{
 		}
 	}
 	
-	private List<LinguisticUnit> applyNegation(List<LinguisticUnit> newlist) {
+/*	private List<LinguisticUnit> applyNegation(List<LinguisticUnit> newlist) {
 		for (LinguisticUnit lu : newlist) {
 			//First, we should determine if it is a negation word.			
 			
@@ -142,7 +169,7 @@ public class PoSSentimentAssigner implements ISentimentAssigner{
 		
 		
 		return null;
-	}
+	}*/
 
 	public double computeNegationOfWord (String s) {
 		if(negationValues==null){

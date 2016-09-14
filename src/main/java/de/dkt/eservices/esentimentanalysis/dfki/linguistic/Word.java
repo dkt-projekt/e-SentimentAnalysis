@@ -29,4 +29,10 @@ public class Word implements LinguisticUnit {
 	public void setSentimentValue(double sentimentValue) {
 		this.sentimentValue = sentimentValue;
 	}
+	
+	public String getString(){
+		return text;
+	}
+
+
 }

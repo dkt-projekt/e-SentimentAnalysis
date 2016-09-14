@@ -48,6 +48,20 @@ public class SpanText implements LinguisticUnit {
 		}
 	}
 	
+	public String getString(){
+		String result = "";
+		if(childs!=null){
+			for (LinguisticUnit lu : childs) {
+//				if(lu instanceof SpanText){
+//					result += " ";
+//				}
+				result += " "+lu.getString();
+			}
+		}
+		return result.trim();
+	}
+
+	
 	public static void main(String[] args) {
 		SpanText t1 = new SpanText("There is something inside the text that can help me do my staff. This is simple, but difficult at the same time.\n I do not know what to do.\n Greetings");
 		t1.indentedPrintToScreen("\t");
