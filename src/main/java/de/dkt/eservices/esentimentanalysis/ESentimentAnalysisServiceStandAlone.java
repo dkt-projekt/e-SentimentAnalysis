@@ -54,7 +54,7 @@ public class ESentimentAnalysisServiceStandAlone extends BaseRestController {
 	
 	@RequestMapping(value = "/e-sentimentanalysis", method = {
             RequestMethod.POST, RequestMethod.GET })
-	public ResponseEntity<String> resolveCoreferences(
+	public ResponseEntity<String> analyseSentiments(
 			HttpServletRequest request,
 			@RequestParam(value = "input", required = false) String input,
 			@RequestParam(value = "language", required = false) String language,

@@ -3,6 +3,7 @@ package de.dkt.eservices.esentimentanalysis;
 import java.io.IOException;
 import org.apache.jena.riot.RiotException;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.hp.hpl.jena.rdf.model.Model;
@@ -30,6 +31,9 @@ import de.dkt.eservices.esentimentanalysis.modules.CoreNLPSentimentAnalyzer;
 public class ESentimentAnalysisService {
     
 	Logger logger = Logger.getLogger(ESentimentAnalysisService.class);
+
+	@Autowired
+	SentimentAnalyzer sa;
 
 	RDFConversionService rdfConversionService = new JenaRDFConversionService();
 	
@@ -64,7 +68,7 @@ public class ESentimentAnalysisService {
 				CoreNLPSentimentAnalyzer.getSentimentForModel(nifModel);
 			}
 			else if(sentimentEngine.equalsIgnoreCase("dfki")){
-				SentimentAnalyzer sa = new SentimentAnalyzer();
+				//SentimentAnalyzer sa = new SentimentAnalyzer();
 				nifModel = sa.analyzeSentimentToModel(nifModel);
 			}
 			else{

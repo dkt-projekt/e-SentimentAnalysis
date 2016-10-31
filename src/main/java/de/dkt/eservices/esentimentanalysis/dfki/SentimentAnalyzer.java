@@ -98,6 +98,8 @@ public class SentimentAnalyzer {
 //        	System.out.println("nif IsString: "+textForProcessing);
         	SpanText text = new SpanText(textForProcessing);
         	
+        	System.out.println(textForProcessing);
+        	System.out.println(sentimentAssigner.computeSentiment(text));
 			double d = sentimentAssigner.computeSentiment(text).getSentimentValue();
 	        return d;
 		}
