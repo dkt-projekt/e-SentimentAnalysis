@@ -11,8 +11,17 @@
  	<parent>
 		<groupId>eu.freme.e-services</groupId>
 		<artifactId>e-service-parent</artifactId>
-		<version>0.1</version>
+		<version>0.9</version>
 	</parent>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.5.3</version>
+      </plugin>
+    </plugins>
+  </build>
 
 	<dependencies>
 		<dependency>
@@ -174,6 +183,6 @@
                 <connection>scm:git:git@github.com:dkt-projekt/e-SentimentAnalysis.git</connection>
                 <url>scm:git:git@github.com/dkt-projekt/e-SentimentAnalysis.git</url>
                 <developerConnection>scm:git:git@github.com:dkt-projekt/e-SentimentAnalysis.git</developerConnection>
-                <tag>HEAD</tag>
+                <tag>e-SentimentAnalysis-0.4</tag>
         </scm>
 </project>
