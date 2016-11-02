@@ -170,4 +170,10 @@
 			</dependencies>
         </profile>
     </profiles>
+        <scm>
+                <connection>scm:git:git@github.com:dkt-projekt/e-SentimentAnalysis.git</connection>
+                <url>scm:git:git@github.com/dkt-projekt/e-SentimentAnalysis.git</url>
+                <developerConnection>scm:git:git@github.com:dkt-projekt/e-SentimentAnalysis.git</developerConnection>
+                <tag>HEAD</tag>
+        </scm>
 </project>
