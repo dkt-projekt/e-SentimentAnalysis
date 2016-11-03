@@ -29,4 +29,4 @@ An annotation for sentiment value, as in the example below:
 ```
 
 ##Example
-`curl -X GET -H "https://api.digitale-kuratierung.de/api/e-sentimentanalysis?sentimentEngine=corenlp&language=en&informat=text&input=My%20opinion%20of%20this%20is%20very%20low.%20It%20is%20a%20bad%20product."`
+`curl -X GET -H -d "http://api.digitale-kuratierung.de/api/e-sentimentanalysis?sentimentEngine=corenlp&language=en&informat=text&input=My%20opinion%20of%20this%20is%20very%20low.%20It%20is%20a%20bad%20product."`
