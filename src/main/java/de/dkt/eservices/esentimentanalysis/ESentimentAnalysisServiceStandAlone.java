@@ -26,6 +26,7 @@ import com.hp.hpl.jena.vocabulary.OWL;
 import com.hp.hpl.jena.vocabulary.RDF;
 
 import de.dkt.common.feedback.InteractionManagement;
+import de.dkt.common.niftools.DKTNIF;
 import de.dkt.common.tools.ParameterChecker;
 import de.dkt.common.tools.ResponseGenerator;
 import eu.freme.common.conversion.rdf.RDFConstants;
@@ -86,6 +87,21 @@ public class ESentimentAnalysisServiceStandAlone extends BaseRestController {
         if(allParams.get("prefix")==null){
         	allParams.put("prefix", prefix);
         }
+        if (input == null) {
+			input = i;
+		}
+		if (informat == null) {
+			informat = f;
+		}
+		if (outformat == null) {
+			outformat = o;
+		}
+		if (prefix == null) {
+			prefix = p;
+		}
+        if (prefix == null || prefix.equalsIgnoreCase("")){
+			prefix = DKTNIF.getDefaultPrefix();
+		}
         
         NIFParameterSet nifParameters = this.normalizeNif(postBody, acceptHeader, contentTypeHeader, allParams, false);
         
@@ -114,7 +130,7 @@ public class ESentimentAnalysisServiceStandAlone extends BaseRestController {
         
         
         try {
-        	Model outModel = service.analyzeSentiment(textForProcessing, language, nifParameters.getInformat(),sentimentEngine);
+        	Model outModel = service.analyzeSentiment(textForProcessing, language, nifParameters.getInformat(),sentimentEngine,prefix);
             outModel.add(inModel);
             // remove unwanted info
             //NOTE: don't know why this is here. Commenting it out

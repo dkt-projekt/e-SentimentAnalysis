@@ -40,7 +40,7 @@ public class ESentimentAnalysisService {
 	public ESentimentAnalysisService() {
 	}
 	
-	public Model analyzeSentiment(String textToProcess, String languageParam, RDFConstants.RDFSerialization inFormat, String sentimentEngine)
+	public Model analyzeSentiment(String textToProcess, String languageParam, RDFConstants.RDFSerialization inFormat, String sentimentEngine, String prefix)
 					throws ExternalServiceFailedException, BadRequestException, IOException, Exception {
 		ParameterChecker.checkNotNullOrEmpty(languageParam, "language", logger);
 		
@@ -48,7 +48,7 @@ public class ESentimentAnalysisService {
 			Model nifModel = null;
 			if (inFormat.equals(RDFConstants.RDFSerialization.PLAINTEXT)) {
 				nifModel = NIFWriter.initializeOutputModel();
-				NIFWriter.addInitialString(nifModel, textToProcess, DKTNIF.getDefaultPrefix());
+				NIFWriter.addInitialString(nifModel, textToProcess, prefix);
 			} else {
 				try {
 					nifModel = NIFReader.extractModelFromFormatString(textToProcess, inFormat);

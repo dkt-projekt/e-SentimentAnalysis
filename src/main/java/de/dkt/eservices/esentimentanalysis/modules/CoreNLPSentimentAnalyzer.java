@@ -40,6 +40,10 @@ public class CoreNLPSentimentAnalyzer {
 	
 	public static void main(String[] args) throws Exception {
 
+//		
+//		System.out.println(getSentiment("This is good. It is very great. Better."));
+//		System.exit(1);
+		
 //		String docFolder = "C:\\Users\\pebo01\\Desktop\\data\\FRONTEO\\complaintsIndividualFiles";
 //		File df = new File(docFolder);
 //		for (File f : df.listFiles()){
