@@ -25,6 +25,8 @@ import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.sentiment.SentimentCoreAnnotations.SentimentAnnotatedTree;
 import edu.stanford.nlp.trees.Tree;
 import edu.stanford.nlp.util.CoreMap;
+import opennlp.tools.sentdetect.SentenceDetector;
+import opennlp.tools.util.Span;
 
 	         
 
@@ -104,11 +106,20 @@ public class CoreNLPSentimentAnalyzer {
 	}
 	
 	
-	public static Model getSentimentForModel(Model nifModel){
+	public static Model getSentimentForModel(Model nifModel, boolean sentenceLevel){
 		
 		String s = NIFReader.extractIsString(nifModel);
 		double sentVal = getSentiment(s);
 		NIFWriter.addSentimentAnnotation(nifModel, s, NIFReader.extractDocumentURI(nifModel), sentVal);
+		
+		if (sentenceLevel == true){ // also do sentence level annotations
+			Span[] sentenceSpans = de.dkt.eservices.eopennlp.modules.SentenceDetector.detectSentenceSpans(s, "en-sent.bin"); // think coreNLP only supports english, so the english sentence model is hardcoded here
+			for (Span sp : sentenceSpans){
+				String sent = s.substring(sp.getStart(), sp.getEnd());
+				double sentValSentence = getSentiment(sent);
+				NIFWriter.addSentenceSentimentAnnotation(nifModel, sp.getStart(), sp.getEnd(), sentValSentence);
+			}
+		}
 		
 		return nifModel;
 		

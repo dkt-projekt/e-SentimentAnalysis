@@ -67,6 +67,7 @@ public class ESentimentAnalysisServiceStandAlone extends BaseRestController {
 			@RequestParam(value = "prefix", required = false) String prefix,
 			@RequestParam(value = "p", required = false) String p,
 			@RequestParam(value = "sentimentEngine", required = false) String sentimentEngine,
+			@RequestParam(value = "sentenceLevel", required = false) boolean sentenceLevel,
 			@RequestHeader(value = "Accept", required = false) String acceptHeader,
 			@RequestHeader(value = "Content-Type", required = false) String contentTypeHeader,
             @RequestParam Map<String, String> allParams,
@@ -130,7 +131,7 @@ public class ESentimentAnalysisServiceStandAlone extends BaseRestController {
         
         
         try {
-        	Model outModel = service.analyzeSentiment(textForProcessing, language, nifParameters.getInformat(),sentimentEngine,prefix);
+        	Model outModel = service.analyzeSentiment(textForProcessing, language, nifParameters.getInformat(),sentimentEngine,prefix, sentenceLevel);
             outModel.add(inModel);
             // remove unwanted info
             //NOTE: don't know why this is here. Commenting it out

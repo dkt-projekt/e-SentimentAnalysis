@@ -30,6 +30,7 @@ import eu.freme.common.conversion.rdf.RDFConstants;
 import eu.freme.common.conversion.rdf.RDFConstants.RDFSerialization;
 import eu.freme.common.conversion.rdf.RDFConversionService;
 import eu.freme.common.exception.ExternalServiceFailedException;
+import opennlp.tools.util.Span;
 
 @Component
 public class SentimentAnalyzer {
@@ -110,7 +111,7 @@ public class SentimentAnalyzer {
 		}
 	}
 
-	public Model analyzeSentimentToModel(String inputText, RDFSerialization format) throws ExternalServiceFailedException {
+	public Model analyzeSentimentToModel(String inputText, RDFSerialization format, boolean sentenceLevel) throws ExternalServiceFailedException {
 		try{
         	Model nifModel = null;
         	RDFConversionService rdfConversionService = new JenaRDFConversionService();
@@ -121,7 +122,7 @@ public class SentimentAnalyzer {
         	else{
             	nifModel = rdfConversionService.unserializeRDF(inputText, format);
         	}
-        	return analyzeSentimentToModel(nifModel);
+        	return analyzeSentimentToModel(nifModel, sentenceLevel);
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -130,13 +131,24 @@ public class SentimentAnalyzer {
 		}
 	}
 
-	public Model analyzeSentimentToModel(Model nifModel) throws ExternalServiceFailedException {
+	public Model analyzeSentimentToModel(Model nifModel, boolean sentenceLevel) throws ExternalServiceFailedException {
 		try{
 			double d = analyzeSentiment(nifModel);
 			String documentURI = NIFReader.extractDocumentURI(nifModel);
 //	        Resource documentResource = nifModel.getResource(documentURI);
 //	        nifModel.add(documentResource, DKTNIF.sentimentValue, nifModel.createTypedLiteral(s.numericValue(), XSDDatatype.XSDstring));
 			NIFWriter.addSentimentAnnotation(nifModel, NIFReader.extractIsString(nifModel), documentURI, d);
+			if (sentenceLevel == true){ // also do sentence level annotations
+				String s = NIFReader.extractIsString(nifModel);
+				Span[] sentenceSpans = de.dkt.eservices.eopennlp.modules.SentenceDetector.detectSentenceSpans(s, "en-sent.bin"); // for now our dict approach only supports english. When we expand to other languages, change hardcoded en-sent.bin here
+				for (Span sp : sentenceSpans){
+					String sent = s.substring(sp.getStart(), sp.getEnd());
+					SpanText text = new SpanText(sent);
+					double sentValSentence = sentimentAssigner.computeSentiment(text).getSentimentValue();;
+					NIFWriter.addSentenceSentimentAnnotation(nifModel, sp.getStart(), sp.getEnd(), sentValSentence);
+				}
+			}
+			
 	        return nifModel;
 		}
 		catch(Exception e){

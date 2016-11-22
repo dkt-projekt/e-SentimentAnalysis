@@ -62,7 +62,7 @@ public class ESentimentAnalysisTest {
 	
 	@Test
 	public void test2_sentimentAnalysis_CORENLP() throws UnirestException, IOException,Exception {
-		String inputString = "1297685	24-03-2015	Debt collection	Cont'd attempts collect debt not owed	Debt is not mine	\"I find this medical debt reported on my credit report  but I do not remember ever owing a bill with a remaining balance of {$7.00}. It looks like the company dated the opening of this debt XX/XX/2010. I looked for the collection company on line  but it is as though it does n't exist. It appears to have impact on my credit score. I am willing to pay it if I could get an itemized bill showing the date of the procedure and when and what my medical insurance company reports about it. Also  if the company no longer exist  IT WILL NEED TO BE REMOVE FROM MY CREDIT REPORT. My complaint is that this company has not sent me a bill showing the details of my so called debt  but has reported to the credit bureau that I owe this debt. This is harming my credit score and it is not making it 's contact information available to me. How am I to clear up my credit report if this company does n't exist  but they have reported that I owe a debt that I have no explanation for? _\" Company chooses not to provide a public response \"Healthcare Collections-I";
+		String inputString = "1297685 24-03-2015 Debt collection Cont'd attempts collect debt not owed Debt is not mine \"I find this medical debt reported on my credit report  but I do not remember ever owing a bill with a remaining balance of {$7.00}. It looks like the company dated the opening of this debt XX/XX/2010. I looked for the collection company on line  but it is as though it does n't exist. It appears to have impact on my credit score. I am willing to pay it if I could get an itemized bill showing the date of the procedure and when and what my medical insurance company reports about it. Also  if the company no longer exist  IT WILL NEED TO BE REMOVE FROM MY CREDIT REPORT. My complaint is that this company has not sent me a bill showing the details of my so called debt  but has reported to the credit bureau that I owe this debt. This is harming my credit score and it is not making it 's contact information available to me. How am I to clear up my credit report if this company does n't exist  but they have reported that I owe a debt that I have no explanation for? _\" Company chooses not to provide a public response \"Healthcare Collections-I";
 
 		HttpResponse<String> response = genericRequest("")
 				.queryString("informat", "text")
@@ -75,6 +75,25 @@ public class ESentimentAnalysisTest {
 //		System.out.println(response.getBody());
 		Assert.assertEquals(TestConstants.outputTest2, response.getBody());
 	}
+	
+	@Test
+	public void test3_sentimentAnalysis_CORENLP() throws UnirestException, IOException,Exception {
+		String inputString = "I find this medical debt reported on my credit report but I do not remember ever owing a bill with a remaining balance of {$7.00}. It looks like the company dated the opening of this debt XX/XX/2010. I looked for the collection company on line  but it is as though it does n't exist.";
+
+		HttpResponse<String> response = genericRequest("")
+				.queryString("informat", "text")
+				.queryString("input", inputString)
+				.queryString("language", "en")
+				.queryString("sentimentEngine", "corenlp")
+				.queryString("sentenceLevel", true)
+				.queryString("outformat", "turtle").asString();
+				
+		Assert.assertTrue(response.getStatus() == 200);
+		Assert.assertTrue(response.getBody().length() > 0);
+//		System.out.println(response.getBody());
+		Assert.assertEquals(TestConstants.outputTest21, response.getBody());
+	}
+
 	
 	
 //	static String readFile(String path, Charset encoding) 
@@ -183,6 +202,25 @@ public class ESentimentAnalysisTest {
 		Assert.assertEquals(TestConstants.outputTest3, response.getBody());
 	}
 
+	@Test
+	public void test31_sentimentAnalysis_DFKI() throws UnirestException, IOException,Exception {
+		String inputString = "I find this medical debt reported on my credit report but I do not remember ever owing a bill with a remaining balance of {$7.00}. It looks like the company dated the opening of this debt XX/XX/2010. I looked for the collection company on line  but it is as though it does n't exist.";
+
+		HttpResponse<String> response = genericRequest("")
+				.queryString("informat", "text")
+				.queryString("input", inputString)
+				.queryString("language", "en")
+				.queryString("sentimentEngine", "dfki")
+				.queryString("sentenceLevel", true)
+				.queryString("outformat", "turtle").asString();
+				
+		Assert.assertTrue(response.getStatus() == 200);
+		Assert.assertTrue(response.getBody().length() > 0);
+//		System.out.println(response.getBody());
+		Assert.assertEquals(TestConstants.outputTest31, response.getBody());
+	}
+
+	
 	@Test
 	public void test4_sentimentAnalysis_UNK() throws UnirestException, IOException,Exception {
 		String inputString = "1297685	24-03-2015	Debt collection	Cont'd attempts collect debt not owed	Debt is not mine	\"I find this medical debt reported on my credit report  but I do not remember ever owing a bill with a remaining balance of {$7.00}. It looks like the company dated the opening of this debt XX/XX/2010. I looked for the collection company on line  but it is as though it does n't exist. It appears to have impact on my credit score. I am willing to pay it if I could get an itemized bill showing the date of the procedure and when and what my medical insurance company reports about it. Also  if the company no longer exist  IT WILL NEED TO BE REMOVE FROM MY CREDIT REPORT. My complaint is that this company has not sent me a bill showing the details of my so called debt  but has reported to the credit bureau that I owe this debt. This is harming my credit score and it is not making it 's contact information available to me. How am I to clear up my credit report if this company does n't exist  but they have reported that I owe a debt that I have no explanation for? _\" Company chooses not to provide a public response \"Healthcare Collections-I";
