@@ -9,7 +9,6 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import de.dkt.common.filemanagement.FileFactory;
-import de.dkt.eservices.erattlesnakenlp.linguistic.SentimentScoper;
 import de.dkt.eservices.esentimentanalysis.dfki.linguistic.LinguisticUnit;
 import de.dkt.eservices.esentimentanalysis.dfki.linguistic.SpanText;
 import de.dkt.eservices.esentimentanalysis.dfki.linguistic.SpanWord;
@@ -110,35 +109,35 @@ public class PoSSentimentAssigner implements ISentimentAssigner{
 			//walk trough sMap and filter stings starting with "negated_". Substract the "negated_" and get the values, *(-1) before adding,
 			//then add the two values. 
 			
-			HashMap<String, List<IndexedWord>>  sMap = SentimentScoper.getScopeForSentiment(lu.getString(), sw);
-//			System.out.println(sMap);
-			List<String> negatedWords = new LinkedList<>();
-			for (String key : sMap.keySet()) {
-			    if(key.contains("negated_")){
-			    	key = key.replace("negated_", "");
-			    	key = key.replaceAll("\\|.*", "");
-			    	negatedWords.add(key);
-			    }
-			}
-			double f =0;
-			for(String word : negatedWords){
-				Word wd = new Word(word);
-				LinguisticUnit foo = computeSentiment(wd);
-				f += foo.getSentimentValue()*(-2);				
-			}
-			double total = value+f;
-			t.setSentimentValue(total);
-			
-			
-			
-//			return computeSentimentOfText(list,values);
-			
-//			List<LinguisticUnit> negatedList = applyNegation(newlist);
-			
-			double d = computeSentimentValueOfText(list,values);
-			
-			
-			
+//			HashMap<String, List<IndexedWord>>  sMap = SentimentScoper.getScopeForSentiment(lu.getString(), sw);
+////			System.out.println(sMap);
+//			List<String> negatedWords = new LinkedList<>();
+//			for (String key : sMap.keySet()) {
+//			    if(key.contains("negated_")){
+//			    	key = key.replace("negated_", "");
+//			    	key = key.replaceAll("\\|.*", "");
+//			    	negatedWords.add(key);
+//			    }
+//			}
+//			double f =0;
+//			for(String word : negatedWords){
+//				Word wd = new Word(word);
+//				LinguisticUnit foo = computeSentiment(wd);
+//				f += foo.getSentimentValue()*(-2);				
+//			}
+//			double total = value+f;
+//			t.setSentimentValue(total);
+//			
+//			
+//			
+////			return computeSentimentOfText(list,values);
+//			
+////			List<LinguisticUnit> negatedList = applyNegation(newlist);
+//			
+//			double d = computeSentimentValueOfText(list,values);
+//			
+//			
+//			
 			return t;
 		}
 	}
