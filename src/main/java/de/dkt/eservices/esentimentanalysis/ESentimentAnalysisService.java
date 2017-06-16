@@ -58,22 +58,35 @@ public class ESentimentAnalysisService {
 			}
 		
 			if (languageParam.equals("en")) {
-				//all is well
-			} else {// add clause for de here when implemented
+				if(sentimentEngine.equalsIgnoreCase("corenlp")){
+					String defaultModel = null; //this is far from elegant, because in english case, it's not used (blame peter!)
+					CoreNLPSentimentAnalyzer.getSentimentForModel(nifModel, sentenceLevel, languageParam, defaultModel);
+				}
+				else if(sentimentEngine.equalsIgnoreCase("dfki")){
+					//SentimentAnalyzer sa = new SentimentAnalyzer();
+					nifModel = sa.analyzeSentimentToModel(nifModel, sentenceLevel);
+				}
+				else {
+					throw new BadRequestException("SentimentEngine value not supported");
+				}
+			} else if (languageParam.equals("de")) {// add clause for de here
+													// when implemented
+				if (sentimentEngine.equalsIgnoreCase("corenlp")) {
+					String defaultModel = "corenlpTrainingDummy";
+					
+					CoreNLPSentimentAnalyzer.getSentimentForModel(nifModel, sentenceLevel, languageParam, defaultModel);
+//				} else if (sentimentEngine.equalsIgnoreCase("dfki")) {
+//					// SentimentAnalyzer sa = new SentimentAnalyzer();
+//					nifModel = sa.analyzeSentimentToModel(nifModel, sentenceLevel);
+				} else {
+					throw new BadRequestException("SentimentEngine value not supported");
+				}
+			} else {
 				logger.error("Unsupported language:" + languageParam);
 				throw new BadRequestException("Unsupported language:" + languageParam);
 			}
 			
-			if(sentimentEngine.equalsIgnoreCase("corenlp")){
-				CoreNLPSentimentAnalyzer.getSentimentForModel(nifModel, sentenceLevel);
-			}
-			else if(sentimentEngine.equalsIgnoreCase("dfki")){
-				//SentimentAnalyzer sa = new SentimentAnalyzer();
-				nifModel = sa.analyzeSentimentToModel(nifModel, sentenceLevel);
-			}
-			else{
-				throw new BadRequestException("SentimentEngine value not supported");
-			}
+			
 			return nifModel;
 			
 		} catch (BadRequestException e) {
