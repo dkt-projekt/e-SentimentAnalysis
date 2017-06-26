@@ -73,28 +73,6 @@ public class CoreNLPSentimentAnalyzer {
 			  return new String(encoded, encoding);
 			}
 	
-//	 public static void extractLabels(Map<Pair<Integer, Integer>, String> spanToLabels, List<HasWord> tokens, String line) {
-//		String[] pieces = line.trim().split("\\s+");
-//		if (pieces.length == 0) {
-//			return;
-//		}
-//		if (pieces.length == 1) {
-//			String error = "Found line with label " + line + " but no tokens to associate with that line";
-//			throw new RuntimeException(error);
-//		}
-//		for (int i = 0; i < tokens.size() - pieces.length + 2; ++i) {
-//			boolean found = true;
-//			for (int j = 1; j < pieces.length; ++j) {
-//				if (!tokens.get(i + j - 1).word().equals(pieces[j])) {
-//					found = false;
-//					break;
-//				}
-//			}
-//			if (found) {
-//				spanToLabels.put(new Pair<>(i, i + pieces.length - 1), pieces[0]);
-//			}
-//		}
-//	}
 
 	public static void setPredictedLabels(Tree tree) {
 		if (tree.isLeaf()) {
@@ -350,78 +328,8 @@ public class CoreNLPSentimentAnalyzer {
 		return tmpFilePath;
 	}
 
-//	// https://github.com/stanfordnlp/CoreNLP/blob/master/src/edu/stanford/nlp/sentiment/BuildBinarizedDataset.java
-//	public String prepareTrainingData(String inputPath){
-//		// code below is copied/stripped from stanford github (check link above
-//		// for more details/comments/explanation
-//		
-//		List<Tree> trainingTrees = new ArrayList<Tree>();
-//		
-//		CollapseUnaryTransformer transformer = new CollapseUnaryTransformer();
-//		String parserModel = "edu/stanford/nlp/models/lexparser/englishPCFG.ser.gz"; // TODO: make argument (allow/test german)
-//		SentimentModel sentimentModel = null;
-//		LexicalizedParser parser = LexicalizedParser.loadModel(parserModel);
-//		parser.setOptionFlags("-tagSeparator ");
-//		TreeBinarizer binarizer = TreeBinarizer.simpleTreeBinarizer(parser.getTLPParams().headFinder(),	parser.treebankLanguagePack());
-//		String tmpFilePath = null;
-//		PrintWriter tempFile = null;
-//		try {
-//			tmpFilePath = FileFactory.generateOrCreateFileInstance("sentimentModels" + File.separator + "corenlpTraining.tmp").getAbsolutePath(); // would rather not do this with temp files and return List<Tree> directly here, but that was problematic later on with reading the gold labels...
-//			tempFile = new PrintWriter(tmpFilePath);
-//		} catch (IOException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
-//		
-//
-//		String text = IOUtils.slurpFileNoExceptions(inputPath);
-//		String[] chunks = text.split("\\n\\s*\\n+"); // need blank line to
-//		for (String chunk : chunks) {
-//			if (chunk.trim().isEmpty()) {
-//				continue;
-//			}
-//			String[] lines = chunk.trim().split("\\n");
-//			String sentence = lines[0];
-//			StringReader sin = new StringReader(sentence);
-//			DocumentPreprocessor document = new DocumentPreprocessor(sin);
-//			document.setSentenceFinalPuncWords(new String[] { "\n" });
-//			List<HasWord> tokens = document.iterator().next();
-//			Integer mainLabel = new Integer(tokens.get(0).word());  
-//			tokens = tokens.subList(1, tokens.size());
-//			Map<Pair<Integer, Integer>, String> spanToLabels = Generics.newHashMap();
-//			for (int i = 1; i < lines.length; ++i) {
-//				//extractLabels(spanToLabels, tokens, lines[i]);
-//				edu.stanford.nlp.sentiment.BuildBinarizedDataset.extractLabels(spanToLabels, tokens, lines[i]);
-//			}
-//			Tree tree = parser.apply(tokens);
-//			Tree binarized = binarizer.transformTree(tree);
-//			Tree collapsedUnary = transformer.transformTree(binarized);
-//			if (sentimentModel != null) {
-//				Trees.convertToCoreLabels(collapsedUnary);
-//				SentimentCostAndGradient scorer = new SentimentCostAndGradient(sentimentModel, null);
-//				scorer.forwardPropagateTree(collapsedUnary);
-//				setPredictedLabels(collapsedUnary);
-//			} else {
-//				setUnknownLabels(collapsedUnary, mainLabel);
-//			}
-//			Trees.convertToCoreLabels(collapsedUnary);
-//			collapsedUnary.indexSpans();
-//			for (Map.Entry<Pair<Integer, Integer>, String> pairStringEntry : spanToLabels.entrySet()) {
-//				edu.stanford.nlp.sentiment.BuildBinarizedDataset.setSpanLabel(collapsedUnary, pairStringEntry.getKey(), pairStringEntry.getValue());
-//			}
-//			
-//			//trainingTrees.add(collapsedUnary);
-//			//System.out.println("Debugging collaped Unary:" + collapsedUnary);
-//			tempFile.println(collapsedUnary);
-//		}
-//		tempFile.close();
-//		
-//		
-//		return tmpFilePath;
-//		
-//	}
-	
-	public static void transformGermanSentimentFileToRightFormat (String inputPath) throws IOException{
+	//Just used this once to transform a corups to a format so that it is usable for the training methods in this class
+	/*public static void transformGermanSentimentFileToRightFormat (String inputPath) throws IOException{
 		BufferedReader br = new BufferedReader(new FileReader(inputPath));  
 		String line = null;  
 		
@@ -451,7 +359,7 @@ public class CoreNLPSentimentAnalyzer {
 		Files.write(file, lines, Charset.forName("UTF-8"));
 		br.close();
 		
-	}
+	}*/
 	
 	
 	@SuppressWarnings("static-access")
@@ -564,43 +472,30 @@ public class CoreNLPSentimentAnalyzer {
 		return modelPath;
 	}
 
+	public static String trainForEnglish(String filePath){
 		
+		CoreNLPSentimentAnalyzer sa = new CoreNLPSentimentAnalyzer();
+		String fp = sa.prepareTrainingDataDebug(filePath);
+		String modelPath = sa.trainModel(fp, "corenlpTrainingDummy");
+		return modelPath;
+	}
+	
+	public static String trainForGerman(String filePath){	
+		CoreNLPSentimentAnalyzer sa = new CoreNLPSentimentAnalyzer();
+		String fp = sa.prepareTrainingDataDebug4German(filePath);
+		String modelPath = sa.trainModel(fp, "corenlpTrainingDummyGerman");
+		return modelPath;
+	}
 	
 	
 	
 	public static void main(String[] args) throws Exception {
-
-//		This is the training for English
-//		CoreNLPSentimentAnalyzer sa = new CoreNLPSentimentAnalyzer();
-//		String fp = sa.prepareTrainingDataDebug("C:\\Users\\Sabine\\Desktop\\WörkWörk\\e-Sentimentanalysis\\100linesExample.txt");
-//		String modelPath = sa.trainModel(fp, "corenlpTrainingDummy");
-
-//		This is the training for German		
-//		CoreNLPSentimentAnalyzer sa = new CoreNLPSentimentAnalyzer();
-//		String fp = sa.prepareTrainingDataDebug4German("C:\\Users\\Sabine\\Desktop\\WörkWörk\\GermanSentiTrainingDataCleaned.txt");
-//		String modelPath = sa.trainModel(fp, "corenlpTrainingDummyGerman");
 		
-//		System.out.println(getSentiment("This is good. It is very great. Better."));
-//		System.exit(1);
-		
-//		String docFolder = "C:\\Users\\pebo01\\Desktop\\data\\FRONTEO\\complaintsIndividualFiles";
-//		File df = new File(docFolder);
-//		for (File f : df.listFiles()){
-//			String fileContent = readFile(f.getAbsolutePath(), StandardCharsets.UTF_8);
-//			double sentVal = getSentiment(fileContent);
-//			System.out.println("Filename:" + f.getAbsolutePath());
-//			System.out.println("sentiment value:" + sentVal);
-//			System.out.println("\n");
-//		}
 		
 		String modelPath = FileFactory.generateOrCreateFileInstance("sentimentModels" + File.separator + "corenlpTrainingDummyGerman").getAbsolutePath();
+		
 		System.out.println(getSentiment("super klasse beste schönste gut", "de", modelPath));
 		System.out.println(getSentiment("schlecht hässlich eklig dumm", "de", modelPath));
-		
-		
-		//String str = "1297685	24-03-2015	Debt collection	Cont'd attempts collect debt not owed	Debt is not mine	\"I find this medical debt reported on my credit report  but I do not remember ever owing a bill with a remaining balance of {$7.00}. It looks like the company dated the opening of this debt XX/XX/2010. I looked for the collection company on line  but it is as though it does n't exist. It appears to have impact on my credit score. I am willing to pay it if I could get an itemized bill showing the date of the procedure and when and what my medical insurance company reports about it. Also  if the company no longer exist  IT WILL NEED TO BE REMOVE FROM MY CREDIT REPORT. My complaint is that this company has not sent me a bill showing the details of my so called debt  but has reported to the credit bureau that I owe this debt. This is harming my credit score and it is not making it 's contact information available to me. How am I to clear up my credit report if this company does n't exist  but they have reported that I owe a debt that I have no explanation for? _\" Company chooses not to provide a public response \"Healthcare Collections-I";
-		//int sentVal = getSentiment(str);
-		//System.out.println("Sentiment value:" + sentVal);
 		
 		
 		//TODO: keep this for somewhere, as it seems to be a neat way of changing the language/annotators in corenlp to german/anything else we included in the pom file
