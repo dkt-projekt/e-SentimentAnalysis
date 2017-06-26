@@ -490,10 +490,11 @@ public class CoreNLPSentimentAnalyzer {
 	
 	
 	public static void main(String[] args) throws Exception {
+		//If you want to train you own model use trainForEnglish(String filePath) or trainForGerman(String filePath)
+		//String modelPath = trainForGerman("C:\\Users\\Sabine\\Desktop\\WörkWörk\\GermanSentiTrainingDataCleanedExpanded.txt");
 		
-		
-		String modelPath = FileFactory.generateOrCreateFileInstance("sentimentModels" + File.separator + "corenlpTrainingDummyGerman").getAbsolutePath();
-		
+		String modelPath = FileFactory.generateOrCreateFileInstance("sentimentModels" + File.separator + "corenlpTrainingDummyGermanBigger").getAbsolutePath();
+
 		System.out.println(getSentiment("super klasse beste schönste gut", "de", modelPath));
 		System.out.println(getSentiment("schlecht hässlich eklig dumm", "de", modelPath));
 		
