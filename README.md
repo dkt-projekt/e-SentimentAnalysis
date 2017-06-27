@@ -3,11 +3,11 @@ This service analyses input for sentiment and provides it with a value. The valu
 
 ## Input
 The following parameters must be specified:
-`language`: Currently only English (`en`) is supported.
+`language`: Currently English (`en`) and German (`de`) is supported.
 
 `informat`: The usual NIF set if accepted input formats (http://persistence.uni-leipzig.org/nlp2rdf/specification/api.html).
 
-`sentimentEngine`: Currently, two engines are offered. `corenlp` (based on the corresponding Stanford CoreNLP code) returns an integer value, where the higher the value, the more positive the sentiment. `dfki` is a dictionary-based approach, where the higher the value, the more positive the sentiment.
+`sentimentEngine`: Currently, two engines are offered. `corenlp` (based on the corresponding Stanford CoreNLP code) returns an integer value, where the higher the value, the more positive the sentiment, ranging between 0 for extremly negative sentiment and 4 for extremly positive sentiment. `dfki` is a dictionary-based approach, where the higher the value, the more positive the sentiment.
 
 ## Output
 An annotation for sentiment value, as in the example below:
