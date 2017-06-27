@@ -4,7 +4,39 @@ public class TestConstants {
 	
 	public static final String pathToPackage = "rdftest/esentimentanalysis-test-package.xml";
 	
-	
+	public static final String outputTest23 = "@prefix dktnif: <http://dkt.dfki.de/ontologies/nif#> .\n" +
+			"@prefix nif-ann: <http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-annotation#> .\n" +
+			"@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n" +
+			"@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .\n" +
+			"@prefix itsrdf: <http://www.w3.org/2005/11/its/rdf#> .\n" +
+			"@prefix nif:   <http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#> .\n" +
+			"@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .\n" +
+			"\n" +
+			"<http://dkt.dfki.de/documents/#char=0,77>\n" +
+			"        a                      nif:RFC5147String , nif:String , nif:Context ;\n" +
+			"        dktnif:sentimentValue  \"1.3333333333333333\"^^xsd:double ;\n" +
+			"        nif:beginIndex         \"0\"^^xsd:nonNegativeInteger ;\n" +
+			"        nif:endIndex           \"77\"^^xsd:nonNegativeInteger ;\n" +
+			"        nif:isString           \"Das ist das Beste was mir in meinem Leben passiert ist. Großartig! Wunderbar!\"^^xsd:string .\n" +
+			"\n" +
+			"<http://dkt.dfki.de/documents/#char=56,66>\n" +
+			"        a                      nif:RFC5147String , nif:String ;\n" +
+			"        dktnif:sentimentValue  \"2.0\"^^xsd:double ;\n" +
+			"        nif:beginIndex         \"56\"^^xsd:nonNegativeInteger ;\n" +
+			"        nif:endIndex           \"66\"^^xsd:nonNegativeInteger .\n" +
+			"\n" +
+			"<http://dkt.dfki.de/documents/#char=0,55>\n" +
+			"        a                      nif:RFC5147String , nif:String ;\n" +
+			"        dktnif:sentimentValue  \"0.0\"^^xsd:double ;\n" +
+			"        nif:beginIndex         \"0\"^^xsd:nonNegativeInteger ;\n" +
+			"        nif:endIndex           \"55\"^^xsd:nonNegativeInteger .\n" +
+			"\n" +
+			"<http://dkt.dfki.de/documents/#char=67,77>\n" +
+			"        a                      nif:RFC5147String , nif:String ;\n" +
+			"        dktnif:sentimentValue  \"2.0\"^^xsd:double ;\n" +
+			"        nif:beginIndex         \"67\"^^xsd:nonNegativeInteger ;\n" +
+			"        nif:endIndex           \"77\"^^xsd:nonNegativeInteger .\n" +
+			"";
 	public static final String outputTest2 = "@prefix dktnif: <http://dkt.dfki.de/ontologies/nif#> .\n" + 
 "@prefix nif-ann: <http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-annotation#> .\n" + 
 "@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n" + 

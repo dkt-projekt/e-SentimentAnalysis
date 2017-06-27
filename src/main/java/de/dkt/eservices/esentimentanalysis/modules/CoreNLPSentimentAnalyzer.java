@@ -539,8 +539,12 @@ public class CoreNLPSentimentAnalyzer {
 	}
 	
 	
-	public static Model getSentimentForModel(Model nifModel, boolean sentenceLevel, String language,  String modelPath) throws IOException {
+	public static Model getSentimentForModel(Model nifModel, boolean sentenceLevel, String language,  String modelName) throws IOException {
 		
+		String modelPath = null;
+		if (language.equalsIgnoreCase("de")){ // result of the ugly hardcoding of the modelName, because it cannot be trained through an endpoint yet anyway. modelPath can remain null for english because it is taking the default corenlp one there anyway
+			modelPath = FileFactory.generateOrCreateFileInstance("sentimentModels" + File.separator + modelName).getAbsolutePath();
+		}
 		String s = NIFReader.extractIsString(nifModel);
 		double sentVal = getSentiment(s,language, modelPath);
 		NIFWriter.addSentimentAnnotation(nifModel, s, NIFReader.extractDocumentURI(nifModel), sentVal);

@@ -72,7 +72,7 @@ public class ESentimentAnalysisService {
 			} else if (languageParam.equals("de")) {// add clause for de here
 													// when implemented
 				if (sentimentEngine.equalsIgnoreCase("corenlp")) {
-					String defaultModel = "corenlpTrainingDummy";
+					String defaultModel = "corenlpTrainingDummyGermanBigger"; // if we also want to offer training as an endpoint, modelname should be a param, but for now it's just hardcoded
 					
 					CoreNLPSentimentAnalyzer.getSentimentForModel(nifModel, sentenceLevel, languageParam, defaultModel);
 //				} else if (sentimentEngine.equalsIgnoreCase("dfki")) {

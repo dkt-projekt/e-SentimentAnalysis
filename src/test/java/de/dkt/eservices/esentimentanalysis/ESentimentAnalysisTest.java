@@ -93,6 +93,24 @@ public class ESentimentAnalysisTest {
 //		System.out.println(response.getBody());
 		Assert.assertEquals(TestConstants.outputTest21, response.getBody());
 	}
+	
+	@Test
+	public void test3_sentimentAnalysis_CORENLP_German() throws UnirestException, IOException,Exception {
+		String inputString = "Das ist das Beste was mir in meinem Leben passiert ist. Großartig! Wunderbar!";
+
+		HttpResponse<String> response = genericRequest("")
+				.queryString("informat", "text")
+				.queryString("input", inputString)
+				.queryString("language", "de")
+				.queryString("sentimentEngine", "corenlp")
+				.queryString("sentenceLevel", true)
+				.queryString("outformat", "turtle").asString();
+				
+		Assert.assertTrue(response.getStatus() == 200);
+		Assert.assertTrue(response.getBody().length() > 0);
+//		System.out.println(response.getBody());
+		Assert.assertEquals(TestConstants.outputTest23, response.getBody());
+	}
 
 	
 	
