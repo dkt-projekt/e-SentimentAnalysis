@@ -1,7 +1,7 @@
 # e-SentimentAnalysis
 This service analyses input for sentiment and provides it with a value. The value that is assigned depends on the parameter value for sentiment engine that is used (see description of parameters below).
 
-##Input
+## Input
 The following parameters must be specified:
 `language`: Currently only English (`en`) is supported.
 
@@ -9,7 +9,7 @@ The following parameters must be specified:
 
 `sentimentEngine`: Currently, two engines are offered. `corenlp` (based on the corresponding Stanford CoreNLP code) returns an integer value, where the higher the value, the more positive the sentiment. `dfki` is a dictionary-based approach, where the higher the value, the more positive the sentiment.
 
-##Output
+## Output
 An annotation for sentiment value, as in the example below:
 ```
 @prefix dktnif: <http://dkt.dfki.de/ontologies/nif#> .
@@ -28,5 +28,5 @@ An annotation for sentiment value, as in the example below:
         nif:isString           "My opinion of this is very low. It is a bad product."^^xsd:string .
 ```
 
-##Example
+## Example
 `curl -X GET -H -d "https://api.digitale-kuratierung.de/api/e-sentimentanalysis?sentimentEngine=corenlp&language=en&informat=text&input=My%20opinion%20of%20this%20is%20very%20low.%20It%20is%20a%20bad%20product."`
